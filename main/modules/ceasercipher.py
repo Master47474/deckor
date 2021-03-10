@@ -1,9 +1,15 @@
-class Ceasercipher:
+from parentmodule import module
+
+class ceasercipher(module):
+
     def __init__(self, ciphertext):
-        self.ciphertext = ciphertext
+        super().__init__(ciphertext)
         # Positive is anticlockwise (i.e  1 -> a = z)
         # Negative is clockwise     (i.e -1 -> a = b)
         self.shift = 0
+        self.setOptions([["SHIFT", lambda : self.getShift(),"For shift of cipher (+int anticlockwise) (-int clockwise)", lambda x : self.setShift(x)]])
+
+
 
     def shift(self):
         shifted = ""
@@ -16,3 +22,14 @@ class Ceasercipher:
             print("Shifted by %d %s", self.shift, "clockwise" )
         else:
             print("Shifted by %d %s", self.shift*-1, "anticlockwise" )
+
+
+    def getShift(self):
+        return self.shift
+
+    def setShift(self, shift):
+        #try:
+        shift = int(shift)
+        self.shift = shift
+        #except:
+        #    print("Please Use an int for a value\n")
