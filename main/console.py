@@ -50,6 +50,8 @@ class Console:
             exit()
         elif(command == "SEARCH"):
             self.search(args)
+        elif(command == "ORIGINAL" or command == "OG"):
+            self.original(args)
         elif(command == "USE"):
             self.use(args)
         elif(command == "SHOW"):
@@ -60,17 +62,23 @@ class Console:
             self.set(args)
         elif(command == "RUN"):
             self.run()
+        elif(command == "BRUTE"):
+            self.brute()
         elif(command == "FREQA"):
             self.freqa()
+        else:
+            print("Command not recognised")
 
     def help(self):
         print("\tSEARCH\t\t : Use to search for tools to use")
+        print("\tORIGINAL \ OG\t\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tUSE\t\t : Use to load a module")
         print("\tSHOW\t\t : Use to get options for a module")
         print("\nModule shit --------")
         print("\tUNLOAD\t\t : Use to unload a module and wiping any settings set for said module")
         print("\tSET\t\t : Use to set a variable in a module")
         print("\tRUN\t\t : Use to run a module")
+        print("\tBRUTE\t\t : Use to run brute force variant2 a module")
         print("\tFREQA\t\t : Use for Frequency Analysis")
         print("")
 
@@ -88,13 +96,24 @@ class Console:
         for (root, dirs, files) in os.walk("modules"):
             for file in files:
                 if(file.endswith(".py")):
-                    if(match in file[0:-3] and (match != "parentmodule.py")):
+                    if(match in file[0:-3]):
                         self.uselist.append(os.path.join(root, file[0:-3]))
                         #print("\t%d\t"%usei, os.path.join(root, file[0:-3]))
         if(len(self.uselist) > 0):
             self.printuselist()
 
+    def original(self, args):
+        #Have Args to see all previous loaded ciphers
+        print("Orignal Last Loaded Ciphertext")
+
     def use(self, args):
+        if(args == []):
+            print("No arguments specified\n")
+            if(len(self.uselist) > 0):
+                print("Maybe try \'USE x\' from the list below")
+                self.printuselist()
+            return
+
         self.resetmodule()
         moduletoload = None
         try:
@@ -117,6 +136,9 @@ class Console:
         self.updatemodule(moduletoload, clas)
 
     def unload(self):
+        if(self.module == None):
+            print("No module loaded to unload\n")
+            return
         self.resetmodule()
 
     def set(self, args):
@@ -140,3 +162,6 @@ class Console:
 
     def run(self):
         self.module.run()
+
+    def brute(self):
+        self.module.brute()
