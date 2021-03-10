@@ -39,7 +39,7 @@ class Console:
 
     def updatemodule(self, path, module):
         self.modulePath = f"\\{path}"
-        self.module = module
+        self.module = module(self.originalCiphertext)
 
     #all commands are in all caps
     def commands(self, command, args):
@@ -48,20 +48,31 @@ class Console:
             self.help()
         elif(command.lower() == "quit"):
             exit()
-        elif(command == "FREQA"):
-            self.freqa()
         elif(command == "SEARCH"):
             self.search(args)
         elif(command == "USE"):
             self.use(args)
+        elif(command == "SHOW"):
+            self.show(args)
         elif(command == "UNLOAD"):
             self.unload()
+        elif(command == "SET"):
+            self.set(args)
+        elif(command == "RUN"):
+            self.run()
+        elif(command == "FREQA"):
+            self.freqa()
 
     def help(self):
         print("\tSEARCH\t\t : Use to search for tools to use")
         print("\tUSE\t\t : Use to load a module")
+        print("\tSHOW\t\t : Use to get options for a module")
+        print("\nModule shit --------")
         print("\tUNLOAD\t\t : Use to unload a module and wiping any settings set for said module")
+        print("\tSET\t\t : Use to set a variable in a module")
+        print("\tRUN\t\t : Use to run a module")
         print("\tFREQA\t\t : Use for Frequency Analysis")
+        print("")
 
     def freqa(self):
         import modules.frequencyanalysis as fa
@@ -77,7 +88,7 @@ class Console:
         for (root, dirs, files) in os.walk("modules"):
             for file in files:
                 if(file.endswith(".py")):
-                    if(match in file[0:-3]):
+                    if(match in file[0:-3] and (match != "parentmodule.py")):
                         self.uselist.append(os.path.join(root, file[0:-3]))
                         #print("\t%d\t"%usei, os.path.join(root, file[0:-3]))
         if(len(self.uselist) > 0):
@@ -91,18 +102,41 @@ class Console:
             print("Loaded ", moduletoload, "Successfully\n")
         except:
             moduletoload = args[0]
-            if(os.path.exists(moduletoload + ".py")):
+            if(os.path.exists(moduletoload + ".py") and (moduletoload != "parentmodule")):
                 print("Loaded", moduletoload, "Successfully\n")
             else:
                 print("Couldnt Load", moduletoload, "Successfully")
                 print("Does this path exist\n")
                 return
         #----------------------------------------------------
-        modulestr = moduletoload.split('\\').join(".")
+        modulestr = ".".join(moduletoload.split('\\'))
         mod = importlib.import_module(modulestr)
+        clas = getattr(mod, modulestr[8:])
         #create a parent class that all modules use which has the same functions that all can use??!!! FUCKKKK
         #----------------------------------------------------
-        self.updatemodule(moduletoload, None)
+        self.updatemodule(moduletoload, clas)
 
     def unload(self):
         self.resetmodule()
+
+    def set(self, args):
+        if(self.module == None):
+            print("Please Load a Module first\n")
+            return
+        (name, value) = (args[0], args[1])
+        self.module.setOptionValue(name, value)
+
+    def show(self, args):
+        #add logic for args
+        self.options()
+
+    def options(self):
+        if (self.module == None):
+            print("Please Load a Module first\n")
+            return
+        #from module.ceasercipher import ceasercipher
+        #cc = ceasercipher("aaaa")
+        self.module.showOptions()
+
+    def run(self):
+        self.module.run()
