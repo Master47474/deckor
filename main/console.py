@@ -14,7 +14,16 @@ class Console:
         self.modulePathprefix = "modules\\"
         self.module = None
         self.uselist = []
+        #of form (command , points to index in commandsFunc) as multiple commands can point to same function
+        self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
+                             ("set", 6), ("run", 7), ("brute", 8), ("use", 9)]
+        self.commandsFunc = [lambda args : self.help(), lambda args : self.quit(), lambda args : self.search(args),
+                             lambda args : self.original(args), lambda args : self.show(args), lambda args : self.unload(),
+                             lambda args : self.set(args), lambda args : self.run(), lambda args : self.brute(),
+                             lambda args : self.use(args)]
 
+
+    #def returnfunc(self, )
     def printciphertext(self):
         print(f"\nOriginal:\n{self.printciphertext}\n")
 
@@ -44,42 +53,25 @@ class Console:
     #all commands are in all caps
     def commands(self, command, args):
         #debugging print("Args : " , args)
-        if(command == "help" or command == "HELP"):
-            self.help()
-        elif(command.lower() == "quit"):
-            exit()
-        elif(command == "SEARCH"):
-            self.search(args)
-        elif(command == "ORIGINAL" or command == "OG"):
-            self.original(args)
-        elif(command == "USE"):
-            self.use(args)
-        elif(command == "SHOW"):
-            self.show(args)
-        elif(command == "UNLOAD"):
-            self.unload()
-        elif(command == "SET"):
-            self.set(args)
-        elif(command == "RUN"):
-            self.run()
-        elif(command == "BRUTE"):
-            self.brute()
-        elif(command == "FREQA"):
-            self.freqa()
-        else:
-            print("Command not recognised")
+        for (com, index) in self.commandsList:
+            if(command == com):
+                self.commandsFunc[index](args)
+                return
+        print("Command not reckognised")
+
+    def quit(self):
+        exit()
 
     def help(self):
-        print("\tSEARCH\t\t : Use to search for tools to use")
-        print("\tORIGINAL \ OG\t\t : Shows last loaded cipher. -a to list all prev ciphers")
-        print("\tUSE\t\t : Use to load a module")
-        print("\tSHOW\t\t : Use to get options for a module")
+        print("\tsearch\t\t : Use to search for tools to use")
+        print("\toriginal \ og\t\t : Shows last loaded cipher. -a to list all prev ciphers")
+        print("\tuse\t\t : Use to load a module")
+        print("\tshow\t\t : Use to get options for a module")
         print("\nModule shit --------")
-        print("\tUNLOAD\t\t : Use to unload a module and wiping any settings set for said module")
-        print("\tSET\t\t : Use to set a variable in a module")
-        print("\tRUN\t\t : Use to run a module")
-        print("\tBRUTE\t\t : Use to run brute force variant2 a module")
-        print("\tFREQA\t\t : Use for Frequency Analysis")
+        print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
+        print("\tset\t\t : Use to set a variable in a module")
+        print("\trun\t\t : Use to run a module")
+        print("\tbrute\t\t : Use to run brute force variant2 a module")
         print("")
 
     def freqa(self):
