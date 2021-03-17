@@ -14,7 +14,6 @@ class module:
         self.AddedCommandsFunc = []
 
 
-
     def showOptions(self):
         print("\n\tName\tValue\tDescription")
         for o in self.options:
@@ -72,6 +71,6 @@ class module:
             if(command == com):
                 print("\t%s\t\t : %s" % (command, desc))
 
-    def run(self):
+    def run(self, args):
         print("Running this Modules Main function")
-        self.runfunction()
+        self.runfunction(args)

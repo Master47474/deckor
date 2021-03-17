@@ -19,7 +19,7 @@ class Console:
                              ("set", 6), ("run", 7), ("use", 8)]
         self.commandsFunc = [lambda args : self.help(), lambda args : self.quit(), lambda args : self.search(args),
                              lambda args : self.original(args), lambda args : self.show(args), lambda args : self.unload(),
-                             lambda args : self.set(args), lambda args : self.run(), lambda args : self.use(args)]
+                             lambda args : self.set(args), lambda args : self.run(args), lambda args : self.use(args)]
 
 
     #def returnfunc(self, )
@@ -167,8 +167,8 @@ class Console:
         #cc = ceasercipher("aaaa")
         self.module.showOptions()
 
-    def run(self):
-        self.module.run()
+    def run(self, args):
+        self.module.run(args)
 
     def brute(self):
         self.module.brute()

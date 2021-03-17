@@ -4,16 +4,22 @@ class ceasercipher(module):
 
     def __init__(self, ciphertext):
         super().__init__(ciphertext)
-        self.runfunction = lambda : self.shift()
-        self.brutefunction = lambda : self.bruteshift()
-        # Positive is anticlockwise (i.e  1 -> a = z)
-        # Negative is clockwise     (i.e -1 -> a = b)
+        #Default Params for Functions
+        #Except checkargs
+        self.defaultParams = [("Brute Shift", ["-q"], [True], [False]), ("Shift", ["-q"], [True], [False])]
+
+        self.runfunction = lambda args : self.shift(*self.checkargs(args, *(self.defaultParams[1][1:])))
+
+
         self.shiftVal = 0
         self.setOptions([["SHIFT", lambda : self.getShift(),"For shift of cipher (+int anticlockwise) (-int clockwise)", lambda x,b : self.setShift(x, b)]])
         #set additional commands
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext")]
-        self.AddedCommandsFunc = [lambda args : self.bruteshift(*(self.checkargs(args, ["-q"] , [True], [False])))  ]
+        self.AddedCommandsFunc = [lambda args : self.bruteshift(*(self.checkargs(args, *(self.defaultParams[0][1:])   ) ))]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
+
+
+
 
     def checkargs(self, args, validInput, result, default):
         """
@@ -22,6 +28,7 @@ class ceasercipher(module):
         ORDER MATTERS
         """
         # Default unless otherwise Changes
+        print("PROBLEM??/")
         ParameterUsed = default
         i = 0
         flagsUsed = 0
@@ -33,16 +40,19 @@ class ceasercipher(module):
             i += 1
         Errormsg = []
         if(flagsUsed != len(args)):
+            print('Fuck Error')
             for arg in args:
                 if arg not in validInput:
-                    Errormsg.appen(arg)
+                    Errormsg.append(arg)
             print("The Following Args Are not recoknised : ", Errormsg)
             print("Function running with default commands")
             return default
         else:
             return ParameterUsed
 
-    def shift(self, quietMode=False):#quietMode=False):
+    # Positive is anticlockwise (i.e  1 -> a = z)
+    # Negative is clockwise     (i.e -1 -> a = b)
+    def shift(self, quietMode):
         shifted = ""
         for c in self.ciphertext:
             if(c == ' '):
@@ -58,12 +68,13 @@ class ceasercipher(module):
             self.newtext = shifted
             print(f"\n{shifted}\n")
         else:
-            return shifted
+            #return shifted
+            pass
 
     def getShift(self):
         return self.shiftVal
 
-    def setShift(self, shift, quietMode=False):
+    def setShift(self, shift, quietMode):
         #try:
         shift = int(shift)
         self.shiftVal = shift
@@ -75,7 +86,7 @@ class ceasercipher(module):
 
     #Added Outside Commands
     #OUTSIDE COMMANDS MUST USE THE args as a paremeter and set them manually in the list self.AddedCommandsFunc(checkargs())
-    def bruteshift(self, quietMode=False):
+    def bruteshift(self, quietMode):
         """
         Parameters Useds
         BOOL quietMode
