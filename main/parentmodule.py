@@ -5,8 +5,13 @@ class module:
         self.alteredtext = []
         self.options = [] # of type (Name, Value, Desc, variableSetter)
         self.runfunction = None
-        self.brutefunction = None
         self.savedSettings = []
+        #This is for extra commands that can only be used in this module
+        # of format ("name", index to functions list, "Desc")
+        self.AddedCommands = []
+        #of format (lambda args : func(args))
+        self.AddedCommandsFunc = []
+
 
     def showOptions(self):
         print("\n\tName\tValue\tDescription")
@@ -48,10 +53,14 @@ class module:
         for i in range(len(self.options)):
             self.options[i][3](self.savedSettings[i], True)
 
-    def run(self):
-        print("Running this Modules function")
-        self.runfunction()
+    def printExtraCommands(self):
+        print("The Modules Extra Commands ------")
+        if (self.AddedCommands == []) :
+            print("There are no Added Commands for this module\n")
+            return
+        for(command, index, desc) in self.AddedCommands:
+            print("\t%s\t\t : %s" % (command, desc))
 
-    def brute(self):
-        print("Running this Modules brute function")
-        self.brutefunction()
+    def run(self):
+        print("Running this Modules Main function")
+        self.runfunction()

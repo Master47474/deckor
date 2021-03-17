@@ -10,7 +10,23 @@ class ceasercipher(module):
         # Negative is clockwise     (i.e -1 -> a = b)
         self.shiftVal = 0
         self.setOptions([["SHIFT", lambda : self.getShift(),"For shift of cipher (+int anticlockwise) (-int clockwise)", lambda x,b : self.setShift(x, b)]])
+        #set additional commands
+        self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext")]
+        self.AddedCommandsFunc = [lambda args : self.bruteshift(self.checkargs(args, ["-q"] , [True], [False]))  ]
 
+    def checkargs(self, args, validInput, result, default):
+        """
+        If arg is in valid input then get the resulting result
+        if arg is not passed then go to default for that arg
+        """
+        # Default unless otherwise Changes
+        ParameterUsed = default
+        i = 0
+        while(i < len(args)):
+            if(validInput[i] in args):
+                ParameterUsed[i] = result[i]
+            i += 1
+        return ParameterUsed
 
     def shift(self, quietMode=False):
         shifted = ""
@@ -18,7 +34,7 @@ class ceasercipher(module):
             if(c == ' '):
                 shifted += c
                 continue
-            shifted += chr((((ord(c) - 97) -self.shiftVal) %26) +97)
+            shifted += chr((((ord(c) - 97) - self.shiftVal) %26) +97)
         if(quietMode == False):
             if self.shiftVal > 0:
                 print("Shifted by %d %s" % (self.shiftVal, "clockwise"))
@@ -30,23 +46,7 @@ class ceasercipher(module):
         else:
             return shifted
 
-    def bruteshift(self, quietMode=False):
-        self.saveSettings()
-        bruted = []
-        for i in range(26):
-            self.setShift(i, True)
-            bruted.append(self.shift(True))
-        self.restoreSettings()
-        savetofile = self.responseNeeded("Save bruteforce to file.txt [y/n] ? ")
-        printtoscreen = self.responseNeeded("Print all of bruteforce [y/n] ?")
-
-        if(savetofile == "y"):
-            print("Saved to file Check /Saves")
-        if(printtoscreen == "y"):
-            for i in range(26):
-                print(f"{i} : {bruted[i]}")
-
-    def getShift(self, quietMode=False):
+    def getShift(self):
         return self.shiftVal
 
     def setShift(self, shift, quietMode=False):
@@ -57,3 +57,29 @@ class ceasercipher(module):
             print("Successfully set value of SHIFT ->", shift)
         #except:
         #    print("Please Use an int for a value\n")
+
+
+    #Added Outside Commands
+    #OUTSIDE COMMANDS MUST USE THE args as a paremeter and set them manually in the list self.AddedCommandsFunc(checkargs())
+    def bruteshift(self, args):
+        """
+        Parameters Useds
+        BOOL quietMode
+        """
+        #Set parameters
+        quietMode = args[0]
+        #End set Parameters
+        self.saveSettings()
+        bruted = []
+        for i in range(26):
+            self.setShift(i, quietMode)
+            bruted.append(self.shift(quietMode))
+        self.restoreSettings()
+        savetofile = self.responseNeeded("Save bruteforce to file.txt [y/n] ? ")
+        printtoscreen = self.responseNeeded("Print all of bruteforce [y/n] ?")
+
+        if(savetofile == "y"):
+            print("Saved to file Check /Saves")
+        if(printtoscreen == "y"):
+            for i in range(26):
+                print(f"{i} -{26-i} : {bruted[i]}")

@@ -16,11 +16,10 @@ class Console:
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
-                             ("set", 6), ("run", 7), ("brute", 8), ("use", 9)]
+                             ("set", 6), ("run", 7), ("use", 8)]
         self.commandsFunc = [lambda args : self.help(), lambda args : self.quit(), lambda args : self.search(args),
                              lambda args : self.original(args), lambda args : self.show(args), lambda args : self.unload(),
-                             lambda args : self.set(args), lambda args : self.run(), lambda args : self.brute(),
-                             lambda args : self.use(args)]
+                             lambda args : self.set(args), lambda args : self.run(), lambda args : self.use(args)]
 
 
     #def returnfunc(self, )
@@ -31,6 +30,7 @@ class Console:
         inline = input(f"dec ({self.modulePath}) > ")
         args = [x for x in inline.split(" ") if x != '' ]
         command = args[0]
+        print("args " , args[1:])
         self.commands(command, args[1:])
 
     def printuselist(self):
@@ -57,6 +57,11 @@ class Console:
             if(command == com):
                 self.commandsFunc[index](args)
                 return
+        if(self.module != None):
+            for (com, index, desc) in self.module.AddedCommands:
+                if(command == com):
+                    self.module.AddedCommandsFunc[index](args)
+                    return
         print("Command not reckognised")
 
     def quit(self):
@@ -71,7 +76,9 @@ class Console:
         print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
         print("\tset\t\t : Use to set a variable in a module")
         print("\trun\t\t : Use to run a module")
-        print("\tbrute\t\t : Use to run brute force variant2 a module")
+        print("")
+        if(self.module != None):
+            self.module.printExtraCommands()
         print("")
 
     def freqa(self):
