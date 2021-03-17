@@ -12,13 +12,14 @@ class ceasercipher(module):
         self.setOptions([["SHIFT", lambda : self.getShift(),"For shift of cipher (+int anticlockwise) (-int clockwise)", lambda x,b : self.setShift(x, b)]])
         #set additional commands
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext")]
-        self.AddedCommandsFunc = [lambda args : self.bruteshift(self.checkargs(args, ["-q"] , [True], [False]))  ]
+        self.AddedCommandsFunc = [lambda args : self.bruteshift(*(self.checkargs(args, ["-q"] , [True], [False])))  ]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
 
     def checkargs(self, args, validInput, result, default):
         """
         If arg is in valid input then get the resulting result
         if arg is not passed then go to default for that arg
+        ORDER MATTERS
         """
         # Default unless otherwise Changes
         ParameterUsed = default
@@ -41,7 +42,7 @@ class ceasercipher(module):
         else:
             return ParameterUsed
 
-    def shift(self, quietMode=False):
+    def shift(self, quietMode=False):#quietMode=False):
         shifted = ""
         for c in self.ciphertext:
             if(c == ' '):
@@ -74,14 +75,11 @@ class ceasercipher(module):
 
     #Added Outside Commands
     #OUTSIDE COMMANDS MUST USE THE args as a paremeter and set them manually in the list self.AddedCommandsFunc(checkargs())
-    def bruteshift(self, args):
+    def bruteshift(self, quietMode=False):
         """
         Parameters Useds
         BOOL quietMode
         """
-        #Set parameters
-        quietMode = args[0]
-        #End set Parameters
         self.saveSettings()
         bruted = []
         for i in range(26):
