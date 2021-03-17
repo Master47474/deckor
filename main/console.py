@@ -55,11 +55,19 @@ class Console:
         #debugging print("Args : " , args)
         for (com, index) in self.commandsList:
             if(command == com):
+                if(len(args) >  0):
+                    if(args[0] == "?"):
+                        print("extra help for command args")
+                        return
                 self.commandsFunc[index](args)
                 return
         if(self.module != None):
             for (com, index, desc) in self.module.AddedCommands:
                 if(command == com):
+                    if(len(args) >  0):
+                        if(args[0] == "?"):
+                            print("Extra Help for command args")
+                            return
                     self.module.AddedCommandsFunc[index](args)
                     return
         print("Command not reckognised")

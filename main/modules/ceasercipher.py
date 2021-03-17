@@ -13,6 +13,7 @@ class ceasercipher(module):
         #set additional commands
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext")]
         self.AddedCommandsFunc = [lambda args : self.bruteshift(self.checkargs(args, ["-q"] , [True], [False]))  ]
+        self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
 
     def checkargs(self, args, validInput, result, default):
         """
@@ -22,11 +23,23 @@ class ceasercipher(module):
         # Default unless otherwise Changes
         ParameterUsed = default
         i = 0
+        flagsUsed = 0
         while(i < len(args)):
             if(validInput[i] in args):
                 ParameterUsed[i] = result[i]
+                #make 2 for when we take argment for an flag
+                flagsUsed += 1
             i += 1
-        return ParameterUsed
+        Errormsg = []
+        if(flagsUsed != len(args)):
+            for arg in args:
+                if arg not in validInput:
+                    Errormsg.appen(arg)
+            print("The Following Args Are not recoknised : ", Errormsg)
+            print("Function running with default commands")
+            return default
+        else:
+            return ParameterUsed
 
     def shift(self, quietMode=False):
         shifted = ""

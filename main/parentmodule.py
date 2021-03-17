@@ -9,8 +9,10 @@ class module:
         #This is for extra commands that can only be used in this module
         # of format ("name", index to functions list, "Desc")
         self.AddedCommands = []
+        self.AddedCommandsHelp = []
         #of format (lambda args : func(args))
         self.AddedCommandsFunc = []
+
 
 
     def showOptions(self):
@@ -60,6 +62,15 @@ class module:
             return
         for(command, index, desc) in self.AddedCommands:
             print("\t%s\t\t : %s" % (command, desc))
+
+    def printExtraCommandsHelp(self, com):
+        print("Command Arguments ------")
+        if (self.AddedCommandsHelp == []) :
+            print("There are no Commands flags for this command\n")
+            return
+        for(command, desc) in self.AddedCommandsHelp:
+            if(command == com):
+                print("\t%s\t\t : %s" % (command, desc))
 
     def run(self):
         print("Running this Modules Main function")
