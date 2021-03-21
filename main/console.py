@@ -17,9 +17,9 @@ class Console:
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
                              ("set", 6), ("run", 7), ("use", 8)]
-        self.commandsFunc = [lambda args : self.help(), lambda args : self.quit(), lambda args : self.search(args),
-                             lambda args : self.original(args), lambda args : self.show(args), lambda args : self.unload(),
-                             lambda args : self.set(args), lambda args : self.run(args), lambda args : self.use(args)]
+        #all take the args argument but some dont use it
+        self.commandsFunc = [self.help, self.quit, self.search, self.original,
+                             self.show, self.unload, self.set, self.run, self.use]
 
 
     #def returnfunc(self, )
@@ -72,10 +72,10 @@ class Console:
                     return
         print("Command not reckognised")
 
-    def quit(self):
+    def quit(self, args):
         exit()
 
-    def help(self):
+    def help(self, args):
         print("\tsearch\t\t : Use to search for tools to use")
         print("\toriginal \ og\t\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tuse\t\t : Use to load a module")
@@ -88,10 +88,6 @@ class Console:
         if(self.module != None):
             self.module.printExtraCommands()
         print("")
-
-    def freqa(self):
-        import modules.frequencyanalysis as fa
-        fa.frequencyanalysis(self.originalCiphertext)
 
     def search(self,args):
         modulesMatching = []
@@ -142,7 +138,7 @@ class Console:
         #----------------------------------------------------
         self.updatemodule(moduletoload, clas)
 
-    def unload(self):
+    def unload(self, args):
         if(self.module == None):
             print("No module loaded to unload\n")
             return
@@ -159,7 +155,7 @@ class Console:
         #add logic for args
         self.options()
 
-    def options(self):
+    def options(self, args):
         if (self.module == None):
             print("Please Load a Module first\n")
             return
@@ -169,6 +165,3 @@ class Console:
 
     def run(self, args):
         self.module.run(args)
-
-    def brute(self):
-        self.module.brute()

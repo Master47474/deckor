@@ -11,7 +11,7 @@ class module:
         self.AddedCommands = []
         self.AddedCommandsHelp = []
         #of format (lambda args : func(args))
-        self.AddedCommandsFunc = []-
+        self.AddedCommandsFunc = []
 
 
     def showOptions(self):
