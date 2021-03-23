@@ -16,10 +16,10 @@ class Console:
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
-                             ("set", 6), ("run", 7), ("use", 8)]
+                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9)]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original,
-                             self.show, self.unload, self.set, self.run, self.use]
+                             self.show, self.unload, self.set, self.run, self.use, self.showUseList]
 
 
     #def returnfunc(self, )
@@ -80,6 +80,7 @@ class Console:
         print("\tsearch\t\t : Use to search for tools to use")
         print("\toriginal \ og\t\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tuse\t\t : Use to load a module")
+        print("\tuselist\t\t : Use to show current uselist")
         print("\tshow\t\t : Use to get options for a module")
         print("\nModule shit --------")
         print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
@@ -134,10 +135,13 @@ class Console:
         #----------------------------------------------------
         modulestr = ".".join(moduletoload.split('\\'))
         mod = importlib.import_module(modulestr)
-        clas = getattr(mod, modulestr[8:])
+        clas = getattr(mod, moduletoload.split('\\')[-1])
         #create a parent class that all modules use which has the same functions that all can use??!!! FUCKKKK
         #----------------------------------------------------
         self.updatemodule(moduletoload, clas)
+
+    def showUseList(self, args):
+        self.printuselist()
 
     def unload(self, args):
         if(self.module == None):
@@ -154,7 +158,7 @@ class Console:
 
     def show(self, args):
         #add logic for args
-        self.options()
+        self.options(args)
 
     def options(self, args):
         if (self.module == None):

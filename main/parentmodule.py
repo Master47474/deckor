@@ -2,6 +2,8 @@ class module:
     def __init__(self, ciphertext):
         #For the Parents Modules Own use
         self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
+        #MUST HAVE EVEN IF NOT USING IT
+        #---------------------------------
         self.newtext = ""                   #the text after the runfunction is applied, only stores latestrun
         self.alteredtext = []               #Not sure
         self.alteredtextHistory = []        #
@@ -16,8 +18,35 @@ class module:
         self.AddedCommands = []              #of format ("name", index to functions list, "Desc", "index to default params")
         self.AddedCommandsFunc = []          #of format (self.func)
         self.AddedCommandsHelp = []          #of format ("name", "\tCommand\t\t : tooltip")
-        self.checkargsFunc = None
+        self.checkargsFunc = self.checkargs
 
+    def checkargs(self, args, validInput, result, default):
+        """
+        If arg is in valid input then get the resulting result
+        if arg is not passed then go to default for that arg
+        ORDER MATTERS
+        """
+        # Default unless otherwise Changes
+        ParameterUsed = default[:]
+        i = 0
+        flagsUsed = 0
+        while(i < len(args)):
+            if(validInput[i] in args):
+                ParameterUsed[i] = result[i]
+                #make 2 for when we take argment for an flag
+                flagsUsed += 1
+            i += 1
+        Errormsg = []
+        if(flagsUsed != len(args)):
+            print('Error With Flags')
+            for arg in args:
+                if arg not in validInput:
+                    Errormsg.append(arg)
+            print("The Following Args Are not recoknised : ", Errormsg)
+            print("Function running with default commands")
+            return default
+        else:
+            return ParameterUsed
 
     def callAddedFunc(self, commandIndex, paramsIndex, args):
         newargs = self.checkargsFunc(args, *(self.defaultParams[paramsIndex][1:]))
@@ -82,8 +111,5 @@ class module:
 
     def run(self, args):
         print("Running this Modules Main function")
-        print("args: ", args)
-        print("Default params : ", self.defaultParams[0][1:])
         newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
-        print(newargs)
         self.runfunction(*newargs)

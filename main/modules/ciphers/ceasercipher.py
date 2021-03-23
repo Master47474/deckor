@@ -12,45 +12,13 @@ class ceasercipher(module):
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext", 1)]
         self.AddedCommandsFunc = [self.bruteshift]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
-        self.checkargsFunc = self.checkargs
         #Module Spefic Variables
         self.shiftVal = 0
 
 
-    def checkargs(self, args, validInput, result, default):
-        """
-        If arg is in valid input then get the resulting result
-        if arg is not passed then go to default for that arg
-        ORDER MATTERS
-        """
-        # Default unless otherwise Changes
-        print("CHECKIN")
-        ParameterUsed = default[:]
-        i = 0
-        flagsUsed = 0
-        while(i < len(args)):
-            if(validInput[i] in args):
-                ParameterUsed[i] = result[i]
-                #make 2 for when we take argment for an flag
-                flagsUsed += 1
-            i += 1
-        Errormsg = []
-        if(flagsUsed != len(args)):
-            print('Fuck Error')
-            for arg in args:
-                if arg not in validInput:
-                    Errormsg.append(arg)
-            print("The Following Args Are not recoknised : ", Errormsg)
-            print("Function running with default commands")
-            return default
-        else:
-            return ParameterUsed
-
     # Positive is anticlockwise (i.e  1 -> a = z)
     # Negative is clockwise     (i.e -1 -> a = b)
     def shift(self, quietMode):
-        print("IN SHIFT")
-        print("QUIETMODE " , quietMode)
         shifted = ""
         for c in self.ciphertext:
             if(c == ' '):
