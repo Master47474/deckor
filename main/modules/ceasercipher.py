@@ -6,18 +6,19 @@ class ceasercipher(module):
         super().__init__(ciphertext)
         #Default Params for Functions
         #Except checkargs
-        self.defaultParams = [("Brute Shift", ["-q"], [True], [False]), ("Shift", ["-q"], [True], [False])]
+        self.defaultParams = [("Shift", ["-q"], [True], [False]), ("Brute Shift", ["-q"], [True], [False])]
 
-        self.runfunction = lambda args : self.shift(*self.checkargs(args, *(self.defaultParams[1][1:])))
+        self.runfunction = self.shift
 
 
         self.shiftVal = 0
-        self.setOptions([["SHIFT", lambda : self.getShift(),"For shift of cipher (+int anticlockwise) (-int clockwise)", lambda x,b : self.setShift(x, b)]])
+        self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
         #set additional commands
-        self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext")]
-        self.AddedCommandsFunc = [lambda args : self.bruteshift(*(self.checkargs(args, *(self.defaultParams[0][1:])   ) ))]
+        self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext", 1)]
+        self.AddedCommandsFunc = [self.bruteshift]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
-
+        #Set Check Args Func
+        self.checkargsFunc = self.checkargs
 
 
 
@@ -28,8 +29,8 @@ class ceasercipher(module):
         ORDER MATTERS
         """
         # Default unless otherwise Changes
-        print("PROBLEM??/")
-        ParameterUsed = default
+        print("CHECKIN")
+        ParameterUsed = default[:]
         i = 0
         flagsUsed = 0
         while(i < len(args)):
@@ -53,6 +54,8 @@ class ceasercipher(module):
     # Positive is anticlockwise (i.e  1 -> a = z)
     # Negative is clockwise     (i.e -1 -> a = b)
     def shift(self, quietMode):
+        print("IN SHIFT")
+        print("QUIETMODE " , quietMode)
         shifted = ""
         for c in self.ciphertext:
             if(c == ' '):
@@ -64,12 +67,10 @@ class ceasercipher(module):
                 print("Shifted by %d %s" % (self.shiftVal, "clockwise"))
             else:
                 print("Shifted by %d %s" % (self.shiftVal*-1, "anticlockwise"))
-        if(quietMode == False):
             self.newtext = shifted
             print(f"\n{shifted}\n")
-        else:
-            #return shifted
-            pass
+        return shifted
+
 
     def getShift(self):
         return self.shiftVal

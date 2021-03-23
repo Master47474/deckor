@@ -7,12 +7,17 @@ class module:
         self.runfunction = None
         self.savedSettings = []
         #This is for extra commands that can only be used in this module
-        # of format ("name", index to functions list, "Desc")
+        # of format ("name", index to functions list, "Desc", "index to default params")
         self.AddedCommands = []
-        self.AddedCommandsHelp = []
-        #of format (lambda args : func(args))
+        #of format ( args : func(args))
         self.AddedCommandsFunc = []
+        self.AddedCommandsHelp = []
+        self.defaultParams = []
+        self.checkargsFunc = None
 
+    def callAddedFunc(self, commandIndex, paramsIndex, args):
+        newargs = self.checkargsFunc(args, *(self.defaultParams[paramsIndex][1:]))
+        self.AddedCommandsFunc[commandIndex](*newargs)
 
     def showOptions(self):
         print("\n\tName\tValue\tDescription")
@@ -59,7 +64,7 @@ class module:
         if (self.AddedCommands == []) :
             print("There are no Added Commands for this module\n")
             return
-        for(command, index, desc) in self.AddedCommands:
+        for(command, index, desc, idp) in self.AddedCommands:
             print("\t%s\t\t : %s" % (command, desc))
 
     def printExtraCommandsHelp(self, com):
@@ -73,4 +78,8 @@ class module:
 
     def run(self, args):
         print("Running this Modules Main function")
-        self.runfunction(args)
+        print("args: ", args)
+        print("Default params : ", self.defaultParams[0][1:])
+        newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
+        print(newargs)
+        self.runfunction(*newargs)
