@@ -4,22 +4,17 @@ class ceasercipher(module):
 
     def __init__(self, ciphertext):
         super().__init__(ciphertext)
-        #Default Params for Functions
-        #Except checkargs
-        self.defaultParams = [("Shift", ["-q"], [True], [False]), ("Brute Shift", ["-q"], [True], [False])]
-
         self.runfunction = self.shift
-
-
-        self.shiftVal = 0
         self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
-        #set additional commands
+
+        self.defaultParams = [("Shift", ["-q"], [True], [False]), ("Brute Shift", ["-q"], [True], [False])]
+        #-------------------
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext", 1)]
         self.AddedCommandsFunc = [self.bruteshift]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
-        #Set Check Args Func
         self.checkargsFunc = self.checkargs
-
+        #Module Spefic Variables
+        self.shiftVal = 0
 
 
     def checkargs(self, args, validInput, result, default):

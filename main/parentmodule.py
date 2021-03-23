@@ -1,19 +1,23 @@
 class module:
     def __init__(self, ciphertext):
-        self.ciphertext = ciphertext
-        self.newtext = "" #the text after the "function is applied"
-        self.alteredtext = []
-        self.options = [] # of type (Name, Value, Desc, variableSetter)
+        #For the Parents Modules Own use
+        self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
+        self.newtext = ""                   #the text after the runfunction is applied, only stores latestrun
+        self.alteredtext = []               #Not sure
+        self.alteredtextHistory = []        #
+        self.options = []                   #of format (Name, self.getvaluefunc, Desc, self.variableSetterfunc)
+                                            # ->>>>>BASICALLY FOR RUN TO FUNCTION WITHOUT ERROR
+        self.savedSettings = []             #copy of all Values in options
+        #------------------------------------------------------
+        #For the Child to declare MUST!
         self.runfunction = None
-        self.savedSettings = []
-        #This is for extra commands that can only be used in this module
-        # of format ("name", index to functions list, "Desc", "index to default params")
-        self.AddedCommands = []
-        #of format ( args : func(args))
-        self.AddedCommandsFunc = []
-        self.AddedCommandsHelp = []
         self.defaultParams = []
+        #This is for extra commands that can only be used in this module
+        self.AddedCommands = []              #of format ("name", index to functions list, "Desc", "index to default params")
+        self.AddedCommandsFunc = []          #of format (self.func)
+        self.AddedCommandsHelp = []          #of format ("name", "\tCommand\t\t : tooltip")
         self.checkargsFunc = None
+
 
     def callAddedFunc(self, commandIndex, paramsIndex, args):
         newargs = self.checkargsFunc(args, *(self.defaultParams[paramsIndex][1:]))
