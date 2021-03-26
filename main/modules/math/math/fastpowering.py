@@ -1,7 +1,7 @@
 from parentmodule import module
 
 class fastpowering(module):
-    def __init__(self, ciphertext):
+    def __init__(self, ciphertext, base=1, exp=1, mod=1):
         super().__init__(ciphertext)
         self.runfunction = self.fastpower
         self.setOptions([["BASE", self.getBase, "The Base to be raised to a power", self.setBase],
@@ -14,9 +14,15 @@ class fastpowering(module):
         self.AddedCommandsFunc = []
         self.AddedCommandsHelp = []
         #Modue Specific varaibles
-        self.base = 1
-        self.exp = 1
-        self.mod = 1
+        try:
+            self.base = int(base)
+            self.exp = int(exp)
+            self.mod = int(mod)
+        except:
+            self.base = 1
+            self.exp = 1
+            self.mod = 1
+            print(f"One or more of the following {base},{exp},{mod} were not a valid values respictifully \n\t--setting as default")
         self.recentSolution = 1
 
 
@@ -27,7 +33,7 @@ class fastpowering(module):
         for bit in range(0, lenStrBinExp):
             binaryVal = 2**bit
             basePowBVmod = (self.base**binaryVal) % self.mod
-            tempSol ^= basePowBVmod
+            tempSol *= basePowBVmod
             tempSol %= self.mod
         self.recentSolution = tempSol
         if(quietMode == False):

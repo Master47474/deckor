@@ -16,10 +16,10 @@ class Console:
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
-                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9)]
+                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10)]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original,
-                             self.show, self.unload, self.set, self.run, self.use, self.showUseList]
+                             self.show, self.unload, self.set, self.run, self.use, self.showUseList, self.quick]
 
 
     #def returnfunc(self, )
@@ -46,9 +46,20 @@ class Console:
         self.modulePathprefix = "modules\\"
         self.module = None
 
-    def updatemodule(self, path, module):
+    def updatemodule(self, path, module, quickArgs=[]):
         self.modulePath = f"\\{path}"
-        self.module = module(self.originalCiphertext)
+        if(quickArgs == []):
+            self.module = module(self.originalCiphertext)
+        else:
+            try:
+                self.module = module(self.originalCiphertext, *quickArgs)
+            except:
+                print("Error with setting args for module ... resetting")
+                self.resetmodule()
+
+    def setModule(self, path, module):
+        self.modulePath = path
+        self.module = module
 
     #all commands are in all caps
     def commands(self, command, args):
@@ -82,6 +93,7 @@ class Console:
         print("\tuse\t\t : Use to load a module")
         print("\tuselist\t\t : Use to show current uselist")
         print("\tshow\t\t : Use to get options for a module")
+        print("\tquick\t\t : Use to quickly load and execute the modules run function wihtout loading the module. Must put inpout args")
         print("\nModule shit --------")
         print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
         print("\tset\t\t : Use to set a variable in a module")
@@ -111,7 +123,8 @@ class Console:
         #Have Args to see all previous loaded ciphers
         print("Orignal Last Loaded Ciphertext")
 
-    def use(self, args):
+    def use(self, args, isQuick=False, quickArgs=[]):
+        print('USE ARGS = ', args)
         if(args == []):
             print("No arguments specified\n")
             if(len(self.uselist) > 0):
@@ -138,7 +151,10 @@ class Console:
         clas = getattr(mod, moduletoload.split('\\')[-1])
         #create a parent class that all modules use which has the same functions that all can use??!!! FUCKKKK
         #----------------------------------------------------
-        self.updatemodule(moduletoload, clas)
+        if(isQuick == False):
+            self.updatemodule(moduletoload, clas)
+        else:
+            self.updatemodule(moduletoload, clas, quickArgs)
 
     def showUseList(self, args):
         self.printuselist()
@@ -159,6 +175,16 @@ class Console:
     def show(self, args):
         #add logic for args
         self.options(args)
+
+    def quick(self, args):
+        print("Quick")
+        savedMod, savedPath = self.module, self.modulePath
+        self.unload(args)
+        self.use(args[1], True, args[2:])
+        if(self.module != None):
+            self.run([])
+        self.unload(args)
+        self.setModule(savedPath, savedMod)
 
     def options(self, args):
         if (self.module == None):

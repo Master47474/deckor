@@ -2,7 +2,7 @@ from parentmodule import module
 
 class ceasercipher(module):
 
-    def __init__(self, ciphertext):
+    def __init__(self, ciphertext, shiftVal=0):
         super().__init__(ciphertext)
         self.runfunction = self.shift
         self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
@@ -13,7 +13,11 @@ class ceasercipher(module):
         self.AddedCommandsFunc = [self.bruteshift]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
         #Module Spefic Variables
-        self.shiftVal = 0
+        try:
+            self.shiftVal = int(shiftVal)
+        except:
+            self.shiftVal = 0
+            print(f"{shiftVal} was not a valid value for SHIFT \n\t--setting as default")
 
 
     # Positive is anticlockwise (i.e  1 -> a = z)
