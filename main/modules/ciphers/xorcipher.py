@@ -31,8 +31,9 @@ class xorcipher(module):
         self.keyType = "unicode"
 
     def XOR(self, quietMode):
-        if isinstance(self.textToXor, str) and isinstance(self.key, str):
+        if self.messageType == "unicode" && self.keyType == "unicode":
             self.recentSolution = self.uuXORb(quietMode)
+            print("Completed")
             return
 
 
