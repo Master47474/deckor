@@ -2,6 +2,7 @@ class module:
     def __init__(self, ciphertext):
         #For the Parents Modules Own use
         self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
+        self.recentSolution = None
         #MUST HAVE EVEN IF NOT USING IT
         #---------------------------------
         self.newtext = ""                   #the text after the runfunction is applied, only stores latestrun
@@ -19,6 +20,12 @@ class module:
         self.AddedCommandsFunc = []          #of format (self.func)
         self.AddedCommandsHelp = []          #of format ("name", "\tCommand\t\t : tooltip")
         self.checkargsFunc = self.checkargs
+        #Modue Specific varaibles
+        #For Quick
+        #Goes Here
+
+    def getRecentOutput(self):
+        return self.recentSolution
 
     def checkargs(self, args, validInput, result, default):
         """

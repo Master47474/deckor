@@ -2,7 +2,7 @@ from parentmodule import module
 
 class ceasercipher(module):
 
-    def __init__(self, ciphertext, shiftVal=0):
+    def __init__(self, ciphertext, shiftVal=None):
         super().__init__(ciphertext)
         self.runfunction = self.shift
         self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
@@ -12,7 +12,8 @@ class ceasercipher(module):
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext", 1)]
         self.AddedCommandsFunc = [self.bruteshift]
         self.AddedCommandsHelp = [("brute", "\t-q\t\t : for quiet mode (minimum output)")]
-        #Module Spefic Variables
+        #Module Specfic Variables
+        #For Quick
         try:
             self.shiftVal = int(shiftVal)
         except:
@@ -39,19 +40,6 @@ class ceasercipher(module):
         return shifted
 
 
-    def getShift(self):
-        return self.shiftVal
-
-    def setShift(self, shift, quietMode):
-        #try:
-        shift = int(shift)
-        self.shiftVal = shift
-        if(quietMode == False):
-            print("Successfully set value of SHIFT ->", shift)
-        #except:
-        #    print("Please Use an int for a value\n")
-
-
     #Added Outside Commands
     #OUTSIDE COMMANDS MUST USE THE args as a paremeter and set them manually in the list self.AddedCommandsFunc(checkargs())
     def bruteshift(self, quietMode):
@@ -73,3 +61,17 @@ class ceasercipher(module):
         if(printtoscreen == "y"):
             for i in range(26):
                 print(f"{i} -{26-i} : {bruted[i]}")
+
+
+    #Setters and Getters
+    def getShift(self):
+        return self.shiftVal
+
+    def setShift(self, shift, quietMode):
+        try:
+            shift = int(shift)
+            self.shiftVal = shift
+            if(quietMode == False):
+                print("Successfully set value of SHIFT ->", shift)
+        except:
+            print("Please Use an int for a SHIFT VALUE\n")
