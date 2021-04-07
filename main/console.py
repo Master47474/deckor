@@ -13,13 +13,16 @@ class Console:
         self.modulePath = "\\"
         self.modulePathprefix = "modules\\"
         self.module = None
+        #contents , module that returned it
+        self.resultlist = []
+        self.invokedResult = None
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
-                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10)]
+                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10), ("res", 11), ("resultslist", 12), ("rl", 12)]
         #all take the args argument but some dont use it
-        self.commandsFunc = [self.help, self.quit, self.search, self.original,
-                             self.show, self.unload, self.set, self.run, self.use, self.showUseList, self.quick]
+        self.commandsFunc = [self.help, self.quit, self.search, self.original, self.show, self.unload,
+                             self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList]
 
 
     #def returnfunc(self, )
@@ -40,6 +43,40 @@ class Console:
             print(f"\t{i}\t{o}")
             i += 1
         print("\n")
+
+    def printresultlist(self):
+        i = 0
+        print("\n\tResult\tContents\tModule\n")
+        for o, m in self.resultlist:
+            print(f"\t{i}\t{o}\t\t{m}")
+            i += 1
+        print("\n")
+
+    def setInvokeResult(self, result):
+        self.invokedResult = result[0]
+
+    def pushResult(self, result, moduleStr):
+        self.resultlist.append((result, moduleStr))
+
+    def reorderArgs(self, keyword, argsNo, args):
+        #argsNo is useless rightnow
+        newargs = args[:]
+        deletedIndcies = []
+        try:
+            for i in range(len(args)):
+                if(args[i] == keyword):
+                    if(args[i] == "res"):
+                        self.res(args[i+1])
+                        deletedIndcies.append(i+1)
+                        newargs[i] = self.invokedResult
+                        continue
+            offset = 0
+            for di in deletedIndcies:
+                del newargs[di - offset]
+                offset += 1
+        except:
+            print("Error Invoking Res x")
+        return newargs
 
     def resetmodule(self):
         self.modulePath = "\\"
@@ -64,6 +101,9 @@ class Console:
     #all commands are in all caps
     def commands(self, command, args):
         #debugging print("Args : " , args)
+        #reword args is res keyword is used
+        args = self.reorderArgs("res", 1, args)
+        print("new Args ", args)
         for (com, index) in self.commandsList:
             if(command == com):
                 if(len(args) >  0):
@@ -89,9 +129,11 @@ class Console:
 
     def help(self, args):
         print("\tsearch\t\t : Use to search for tools to use")
-        print("\toriginal \ og\t\t : Shows last loaded cipher. -a to list all prev ciphers")
+        print("\toriginal \ og\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tuse\t\t : Use to load a module")
+        print("\tres\t\t : Use to invoke a recent result")
         print("\tuselist\t\t : Use to show current uselist")
+        print("\tresultslist\t : Use to show recent results list")
         print("\tshow\t\t : Use to get options for a module")
         print("\tquick\t\t : Use to quickly load and execute the modules run function wihtout loading the module. Must put inpout args")
         print("\nModule shit --------")
@@ -156,8 +198,28 @@ class Console:
         else:
             self.updatemodule(moduletoload, clas, quickArgs)
 
+    def res(self, args):
+        print('RES ARGS = ', args)
+        if(args == []):
+            print("No arguments specified\n")
+            if(len(self.resultlist) > 0):
+                print("Maybe try \'RES x\' from the list below")
+                self.printresultlist()
+                return
+        try:
+            if(int(args[0]) < len(self.resultlist)):
+                self.setInvokeResult(self.resultlist[int(args[0])])
+            else:
+                print("Index out of range for result list")
+        except:
+            print("Please input a valid index")
+
+
     def showUseList(self, args):
         self.printuselist()
+
+    def showResultsList(self, args):
+        self.printresultlist()
 
     def unload(self, args):
         if(self.module == None):
@@ -196,3 +258,9 @@ class Console:
 
     def run(self, args):
         self.module.run(args)
+        if(self.module.recentSolution != None):
+            if(self.module.recentSolutionList == False):
+                self.pushResult(self.module.recentSolution, self.modulePath)
+            else:
+                for r in self.recentSolution:
+                    self.pushResult(r, self.modulePath)

@@ -2,6 +2,7 @@ class module:
     def __init__(self, ciphertext):
         #For the Parents Modules Own use
         self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
+        self.recentSolutionList = False
         self.recentSolution = None
         #MUST HAVE EVEN IF NOT USING IT
         #---------------------------------
@@ -25,7 +26,7 @@ class module:
         #Goes Here
 
     def getRecentOutput(self):
-        return self.recentSolution
+        return self.recentSolution, self.recentSolutionList
 
     def checkargs(self, args, validInput, result, default):
         """

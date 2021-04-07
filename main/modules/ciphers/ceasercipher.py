@@ -37,7 +37,8 @@ class ceasercipher(module):
                 print("Shifted by %d %s" % (self.shiftVal*-1, "anticlockwise"))
             self.newtext = shifted
             print(f"\n{shifted}\n")
-        return shifted
+        self.recentSolutionList = False
+        self.recentSolution = shifted
 
 
     #Added Outside Commands
@@ -61,6 +62,9 @@ class ceasercipher(module):
         if(printtoscreen == "y"):
             for i in range(26):
                 print(f"{i} -{26-i} : {bruted[i]}")
+                
+        self.recentSolutionList = True
+        self.recentSolution = bruted
 
 
     #Setters and Getters
