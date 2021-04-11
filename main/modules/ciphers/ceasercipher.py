@@ -1,6 +1,13 @@
 from parentmodule import module
+"""
+To Add for this Module
 
-class ceasercipher(module):
+1) Save output to file
+
+"""
+
+
+class ceasercipher(module): # Shift Cipher
 
     def __init__(self, ciphertext, shiftVal=None):
         super().__init__(ciphertext)
@@ -62,7 +69,7 @@ class ceasercipher(module):
         if(printtoscreen == "y"):
             for i in range(26):
                 print(f"{i} -{26-i} : {bruted[i]}")
-                
+
         self.recentSolutionList = True
         self.recentSolution = bruted
 
