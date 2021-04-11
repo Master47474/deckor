@@ -38,11 +38,21 @@ class module:
         ParameterUsed = default[:]
         i = 0
         flagsUsed = 0
-        while(i < len(args)):
-            if(validInput[i] in args):
-                ParameterUsed[i] = result[i]
-                #make 2 for when we take argment for an flag
-                flagsUsed += 1
+        while(i < len(validInput)):
+            if(isinstance(validInput[i], list)):
+                j = 0
+                while(j < len(validInput[i])):
+                    if(validInput[i][j] in args):
+                        ParameterUsed[i] = result[i][j]
+                        #make 2 for when we take argment for an flag
+                        flagsUsed += 1
+                        break #as there can only be one of this type of flag hence it being in a list of a list
+                    j+= 1
+            else:
+                if(validInput[i] in args):
+                    ParameterUsed[i] = result[i]
+                    #make 2 for when we take argment for an flag
+                    flagsUsed += 1
             i += 1
         Errormsg = []
         if(flagsUsed != len(args)):

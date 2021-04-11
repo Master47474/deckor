@@ -9,7 +9,12 @@ class xorcipher(module):
                          ["KT", self.getKeyType, "Type of the key", self.setKeyType],
                          ["MT", self.getMessageType, "Type of the message", self.setMessageType]])
 
-        self.defaultParams = [("XOR", ["-q"], [True], [False])]
+        self.defaultParams = [("XOR", ["-q", ["-b", "-rh", "-h"]], [True, [0, 1, 2]], [False, 0])]
+        """
+        -b  = 0
+        -rh = 1 readable hex
+        -h  = 2 hex (deafult BLOCK SIZE = 1)
+        """
         #-------------
         self.AddedCommands = []
         self.AddedCommandsFunc = []
@@ -30,9 +35,18 @@ class xorcipher(module):
         self.messageType = "unicode"
         self.keyType = "unicode"
 
-    def XOR(self, quietMode):
-        if self.messageType == "unicode" && self.keyType == "unicode":
+    def XOR(self, quietMode, outputType):
+        if self.messageType == "unicode" and self.keyType == "unicode":
             self.recentSolution = self.uuXORb(quietMode)
+            if(outputType == 0): #defaut return type (BYTES)
+                print("Default Return")
+                pass
+            elif(outputType == 1):
+                print("Readable HEx Return")
+                self.recentSolution =  " ".join([(hex(x)[2:].zfill(2)).upper() for x in self.recentSolution])
+            elif(outputType == 2):
+                print("HEX Return")
+                self.recentSolution = "".join(["\\"+hex(x)[1:] for x in self.recentSolution])
             print("Completed")
             return
 
@@ -54,6 +68,7 @@ class xorcipher(module):
             print("Bytes are ", bytes(xoredText))
             print("In Readable hex ", " ".join([(hex(x)[2:].zfill(2)).upper() for x in xoredText]))
         return bytes(xoredText)
+
 
 
 
@@ -81,7 +96,6 @@ class xorcipher(module):
 
     def getMessage(self):
         return self.textToXor
-
 
     def setKeyType(self, keyType, quietMode):
         self.keyType = keyType
