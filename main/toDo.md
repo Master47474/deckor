@@ -24,8 +24,8 @@ The Additons for modules
 Save output to file
 
 # XorCipher.py
-Be Able to Input Hex instead of Unicode for KEY, MESSAGE
-Save ouput to file
+Be Able to Input Hex instead of Unicode for KEY, MESSAGE\
+Save ouput to file\
 Read Key and Message from File
 
 # Maths
