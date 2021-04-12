@@ -25,9 +25,8 @@ Save output to file
 
 # XorCipher.py
 Be Able to Input Hex instead of Unicode for KEY, MESSAGE
-Save ouput to file\n
-Read Key and Message from File\n
-
+Save ouput to file
+Read Key and Message from File
 
 # Maths
 
