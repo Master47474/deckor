@@ -1,11 +1,4 @@
 from parentmodule import module
-"""
-To Add for this Module
-
-1) Save output to file
-
-"""
-
 
 class ceasercipher(module): # Shift Cipher
 

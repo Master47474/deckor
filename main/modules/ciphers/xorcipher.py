@@ -1,16 +1,4 @@
 from parentmodule import module
-"""
-To Add for this Module
-
-
-1) Be Able to Input Hex instead of Unicode for KEY, MESSAGE
-2) Save ouput to file
-3) Read Key and Message from File
-
-"""
-
-
-
 
 
 class xorcipher(module):
