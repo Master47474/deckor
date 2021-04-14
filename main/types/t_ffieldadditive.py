@@ -5,8 +5,15 @@ Inverse Element = x*x^-1 = 0
 Ord(element) = el + el + el + ... + el = id (n times) = n
 """
 
-class MyFiniteInt():
-    pass
+class GroupElement():
+    def __init__(self, value):
+        self.value = value
+        pass
+
+class FiniteGroupElement(GroupElement):
+    def __init__(self, value, modulo):
+        super().__init__(value)
+        self.modulo = modulo
 
 
 class t_ffieldadditive():
@@ -75,7 +82,7 @@ f5 = t_ffieldadditive(7, 5)
 print("Done 5")
 f6 = t_ffieldadditive(7, 6)
 print("Done 6")
-f7 = t_ffieldadditive(8, 2)
+f7 = t_ffieldadditive(16, 2)
 
 f = [f1, f2, f3, f4, f5, f6, f7]
 for ff in f:
