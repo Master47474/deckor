@@ -15,6 +15,7 @@ class module:
         #------------------------------------------------------
         #For the Child to declare MUST!
         self.runfunction = None
+        self.quick = False # To implement For a quick function
         self.defaultParams = []
         #This is for extra commands that can only be used in this module
         self.AddedCommands = []              #of format ("name", index to functions list, "Desc", "index to default params")
