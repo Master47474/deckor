@@ -13,16 +13,20 @@ class Console:
         self.modulePath = "\\"
         self.modulePathprefix = "modules\\"
         self.module = None
+        self.cwd = os.getcwd()  #Current Working Dir
+        print("cwd = ",self.cwd)
         #contents , module that returned it
         self.resultlist = []
         self.invokedResult = None
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
-                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10), ("res", 11), ("resultslist", 12), ("rl", 12)]
+                             ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10), ("res", 11),
+                             ("resultslist", 12), ("rl", 12), ("fload", 13), ("cd", 14), ("pwd", 15), ("ls", 16)]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original, self.show, self.unload,
-                             self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList]
+                             self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList,
+                             self.fload, self.cd, self.pwd, self.ls]
 
 
     #def returnfunc(self, )
@@ -136,10 +140,15 @@ class Console:
         print("\tresultslist\t : Use to show recent results list")
         print("\tshow\t\t : Use to get options for a module")
         print("\tquick\t\t : Use to quickly load and execute the modules run function wihtout loading the module. Must put inpout args")
+        print("\tfload\t\t : Use to load in text from a a file")
         print("\nModule shit --------")
         print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
         print("\tset\t\t : Use to set a variable in a module")
         print("\trun\t\t : Use to run a module")
+        print("\nDirectory shit --------")
+        print("\tpwd\t\t : Path to working directory")
+        print("\tcd\t\t : Change Directory")
+        print("\tls\t\t : List all files in Current working directory")
         print("")
         if(self.module != None):
             self.module.printExtraCommands()
@@ -248,6 +257,10 @@ class Console:
         self.unload(args)
         self.setModule(savedPath, savedMod)
 
+    def fload(self, args):
+        print("Running fload")
+        pass
+
     def options(self, args):
         if (self.module == None):
             print("Please Load a Module first\n")
@@ -264,3 +277,56 @@ class Console:
             else:
                 for r in self.recentSolution:
                     self.pushResult(r, self.modulePath)
+
+    def pwd(self, args):
+        print("Running pwd")
+        print(self.cwd)
+        pass
+
+    def cd(self, args):
+        print("Running cd")
+        if(len(args) > 0):
+            temppath = self.cwd
+            x = None
+            if(args[0][0] == "/" or args[0][0] == "\\"):
+                x = temppath+args[0][1:]
+            else:
+                x = temppath+"\\"+args[0]
+            #print(x)
+            #Work Backwards to Get manage .. and . directory
+            #remove all . from x
+            newPath = ""
+            #print(x.split("\\"))
+            for subdir in x.split("\\"):
+                if(subdir != "."):
+                    newPath += subdir+"\\"
+            newPath = newPath[:-1]
+            #Work Backwards to remove all ..
+            allowedPaths = []
+            fordd = newPath.split("\\")
+            i = len(fordd)-1
+            while i >= 0:
+                if(fordd[i] == ".."):
+                    i -= 1
+                else:
+                    allowedPaths.append(fordd[i])
+                i -= 1
+            newPath = ""
+            for subdir in allowedPaths[::-1]:
+                newPath += subdir+"\\"
+            newPath = newPath[:-1]
+            if(os.path.exists(newPath)):
+                self.cwd = newPath
+            else:
+                print("Change Not Made")
+        else:
+            print("No Args Specified")
+
+    def ls(self, args):
+        print("Running ls")
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        dirs = [f for f in os.listdir('.') if os.path.isdir(f)]
+        for d in dirs:
+            print("\t\\"+d+"\\")
+        for f in files:
+            print("\t\\"+f)
