@@ -31,7 +31,7 @@ class Console:
 
     #def returnfunc(self, )
     def printciphertext(self):
-        print(f"\nOriginal:\n{self.printciphertext}\n")
+        print(f"\nOriginal:\n{self.originalCiphertext}\n")
 
     def awaitcommand(self):
         inline = input(f"dec ({self.modulePath}) > ")
@@ -173,6 +173,7 @@ class Console:
     def original(self, args):
         #Have Args to see all previous loaded ciphers
         print("Orignal Last Loaded Ciphertext")
+        self.printciphertext()
 
     def use(self, args, isQuick=False, quickArgs=[]):
         print('USE ARGS = ', args)
@@ -259,7 +260,18 @@ class Console:
 
     def fload(self, args):
         print("Running fload")
-        pass
+        #check if file is in path exists
+        if(len(args) > 0):
+            val, newPath = self.pathexists(args[0])
+            if(val):
+                print("File %s Exists" % args[0])
+                with open(newPath, 'r') as file:
+                    self.originalCiphertext = file.read()
+                    print(f"Ciphertext Loaded from file: \n{self.originalCiphertext}\n")
+            else:
+                print("Path to file does not exist")
+        else:
+            print("We Cannot Load file")
 
     def options(self, args):
         if (self.module == None):
@@ -278,26 +290,48 @@ class Console:
                 for r in self.recentSolution:
                     self.pushResult(r, self.modulePath)
 
-    def pwd(self, args):
-        print("Running pwd")
-        print(self.cwd)
-        pass
-
-    def cd(self, args):
-        print("Running cd")
-        if(len(args) > 0):
-            temppath = self.cwd
-            x = None
-            if(args[0][0] == "/" or args[0][0] == "\\"):
-                x = temppath+args[0][1:]
+    def pathexists(self, arg):
+        temppath = self.cwd
+        x = None
+        if(arg[0] == "/" or arg[0] == "\\"):
+            if(arg[0] == "/"):
+                arg = "\\" + arg[1:]
+            x = temppath+arg
+        else:
+            x = temppath+"\\"+arg
+        #Work Backwards to Get manage .. and . directory
+        #remove all . from x
+        newPath = ""
+        #print(x.split("\\"))
+        for subdir in x.split("\\"):
+            if(subdir != "."):
+                newPath += subdir+"\\"
+        newPath = newPath[:-1]
+        #Work Backwards to remove all ..
+        allowedPaths = []
+        fordd = newPath.split("\\")
+        i = len(fordd)-1
+        while i >= 0:
+            if(fordd[i] == ".."):
+                i -= 1
             else:
-                x = temppath+"\\"+args[0]
-            #print(x)
+                allowedPaths.append(fordd[i])
+            i -= 1
+        newPath = ""
+        #reverse and concatinate
+        for subdir in allowedPaths[::-1]:
+            newPath += subdir+"\\"
+        newPath = newPath[:-1]
+        if(os.path.exists(newPath)):
+            return (True, newPath)
+        else:
+            #check if the arg alone is a valid path to go to
+            xAbs = arg
             #Work Backwards to Get manage .. and . directory
             #remove all . from x
             newPath = ""
             #print(x.split("\\"))
-            for subdir in x.split("\\"):
+            for subdir in xAbs.split("\\"):
                 if(subdir != "."):
                     newPath += subdir+"\\"
             newPath = newPath[:-1]
@@ -312,10 +346,26 @@ class Console:
                     allowedPaths.append(fordd[i])
                 i -= 1
             newPath = ""
+            #reverse and concatinate
             for subdir in allowedPaths[::-1]:
                 newPath += subdir+"\\"
             newPath = newPath[:-1]
             if(os.path.exists(newPath)):
+                return (True, newPath)
+            else:
+                return (False, newPath)
+
+
+    def pwd(self, args):
+        print("Running pwd")
+        print(self.cwd)
+        pass
+
+    def cd(self, args):
+        print("Running cd")
+        if(len(args) > 0):
+            val, newPath = self.pathexists(args[0])
+            if(val):
                 self.cwd = newPath
             else:
                 print("Change Not Made")
