@@ -12,7 +12,8 @@ Ability to change ciphertext from input or new file\
 recursive function\
 
 ## ParentModule.py
-Ability to have block sizes for output and/or input \
+Ability to have block sizes for output and/or input *to be done in new module*\
+allow for recent Solution output to be piped into a file instead of screen\
 
 
 # Modules
