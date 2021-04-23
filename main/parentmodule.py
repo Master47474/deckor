@@ -95,7 +95,7 @@ class module:
     def setOptionValue(self, setName, setValue):
         for (name, value, desc, setFunc) in self.options:
             if(setName == name):
-                setFunc(setValue, False)
+                setFunc(setValue, False) #all set functions of form value, QuietMode
                 break
 
     def resetAltered(self):
@@ -132,3 +132,4 @@ class module:
         print("Running this Modules Main function")
         newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
         self.runfunction(*newargs)
+        print(self.recentSolution)

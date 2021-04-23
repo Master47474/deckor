@@ -10,7 +10,7 @@ class xorcipher(module):
                          ["KT", self.getKeyType, "Type of the key", self.setKeyType],
                          ["MT", self.getMessageType, "Type of the message", self.setMessageType]])
 
-        self.defaultParams = [("XOR", ["-q", ["-b", "-rh", "-h"]], [True, [0, 1, 2]], [False, 0])]
+        self.defaultParams = [("Xor", ["-q", ["-b", "-rh", "-h"]], [True, [0, 1, 2]], [False, 0])]
         """
         -b  = 0
         -rh = 1 readable hex

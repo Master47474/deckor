@@ -68,9 +68,6 @@ class ceasercipher(module): # Shift Cipher
 
 
     #Setters and Getters
-    def getShift(self):
-        return self.shiftVal
-
     def setShift(self, shift, quietMode):
         try:
             shift = int(shift)
@@ -79,3 +76,6 @@ class ceasercipher(module): # Shift Cipher
                 print("Successfully set value of SHIFT ->", shift)
         except:
             print("Please Use an int for a SHIFT VALUE\n")
+
+    def getShift(self):
+        return self.shiftVal

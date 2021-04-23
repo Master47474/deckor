@@ -35,10 +35,30 @@ class Console:
 
     def awaitcommand(self):
         inline = input(f"dec ({self.modulePath}) > ")
-        args = [x for x in inline.split(" ") if x != '' ]
+        #args = [x for x in inline.split(" ") if x != '' ]
+        args = self.parseArgs(inline)
         command = args[0]
         print("args " , args[1:])
         self.commands(command, args[1:])
+
+
+    def parseArgs(self, inline):
+        args = []
+        arg = ""
+        insideQuote = False
+        for char in inline:
+            if char == " " and insideQuote == False:
+                args.append(arg)
+                arg = ""
+                continue
+            if(char == "\""):
+                insideQuote = insideQuote ^ True
+                #Start Makes this True, End Makes this False repeat....
+            #We are inside a quote
+            arg += char
+        if(arg != ""):
+            args.append(arg)
+        return args
 
     def printuselist(self):
         i = 0

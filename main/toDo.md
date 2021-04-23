@@ -9,6 +9,7 @@ Ability to Load, store and restore multiple console sessions at any given time\
 
 ## Console.py
 Ability to change ciphertext from input or new file\
+recursive function\
 
 ## ParentModule.py
 Ability to have block sizes for output and/or input \
@@ -16,7 +17,8 @@ Ability to have block sizes for output and/or input \
 
 # Modules
 The Additons for modules\
-
+base64DecoderEncoder\
+add blocksizes to text module\
 
 # Ciphers
 
@@ -37,3 +39,9 @@ Nothing\
 
 ## FastPowering.py
 Nothing\
+
+
+# Misc
+
+## replacechar.py
+Make it work for quick call\
