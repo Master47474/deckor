@@ -26,10 +26,14 @@ class ceasercipher(module): # Shift Cipher
     def shift(self, quietMode):
         shifted = ""
         for c in self.ciphertext:
-            if(c == ' '):
+            if(c == ' ' or c == '\n'):
                 shifted += c
                 continue
-            shifted += chr((((ord(c) - 97) - self.shiftVal) %26) +97)
+            #is char upper case
+            if(ord(c) >= 65 and ord(c) <= 90):
+                shifted += chr((((ord(c) - 65) - self.shiftVal) %26) +65)
+            else:
+                shifted += chr((((ord(c) - 97) - self.shiftVal) %26) +97)
         if(quietMode == False):
             if self.shiftVal > 0:
                 print("Shifted by %d %s" % (self.shiftVal, "clockwise"))
