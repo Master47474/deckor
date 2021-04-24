@@ -1,6 +1,9 @@
 # To Do File
 A file that lists to dos or wanted additions to the program\
 
+# Goals
+Be able to solve most challenges on cryptohack using this\
+
 ## Main.py
 Nothing
 
