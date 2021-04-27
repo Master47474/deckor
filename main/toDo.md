@@ -13,6 +13,7 @@ Ability to Load, store and restore multiple console sessions at any given time\
 ## Console.py
 Ability to change ciphertext from input or new file\
 recursive function\
+Highlighting Matches in a string when output for searching for modules\
 
 ## ParentModule.py
 Ability to have block sizes for output and/or input *to be done in new module*\
@@ -21,7 +22,7 @@ allow for recent Solution output to be piped into a file instead of screen\
 
 # Modules
 The Additons for modules\
-base64DecoderEncoder\
+base64Decoder\
 add blocksizes to text module\
 
 # Ciphers
@@ -33,6 +34,15 @@ Save output to file
 Be Able to Input Hex instead of Unicode for KEY, MESSAGE\
 Save ouput to file\
 Read Key and Message from File\
+
+# Encoding
+
+## Base64
+
+### Base64 Encoder
+Nothing \
+
+
 
 # Encryption
 

@@ -25,7 +25,7 @@ class Console:
                              ("resultslist", 12), ("rl", 12), ("fload", 13), ("cd", 14), ("pwd", 15), ("ls", 16)]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original, self.show, self.unload,
-                             self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showRes ultsList,
+                             self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList,
                              self.fload, self.cd, self.pwd, self.ls]
 
 
