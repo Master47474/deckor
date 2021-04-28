@@ -1,5 +1,10 @@
 import os
 import importlib
+from colorama import init
+from termcolor import colored
+#Init colorama and termcolor
+init()
+
 
 class Console:
     """
@@ -22,11 +27,12 @@ class Console:
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
                              ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10), ("res", 11),
-                             ("resultslist", 12), ("rl", 12), ("fload", 13), ("cd", 14), ("pwd", 15), ("ls", 16)]
+                             ("resultslist", 12), ("rl", 12), ("fload", 13), ("cd", 14), ("pwd", 15), ("ls", 16),
+                             (("searchp", 17))]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original, self.show, self.unload,
                              self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList,
-                             self.fload, self.cd, self.pwd, self.ls]
+                             self.fload, self.cd, self.pwd, self.ls, self.searchp]
 
 
     #def returnfunc(self, )
@@ -153,6 +159,7 @@ class Console:
 
     def help(self, args):
         print("\tsearch\t\t : Use to search for tools to use")
+        print("\tsearchp\t\t : Use to search for tools to use including full path")
         print("\toriginal \ og\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tuse\t\t : Use to load a module")
         print("\tres\t\t : Use to invoke a recent result")
@@ -174,7 +181,10 @@ class Console:
             self.module.printExtraCommands()
         print("")
 
-    def search(self,args):
+    def searchp(self, args):
+        self.search(args, True)
+
+    def search(self,args, p=False):
         modulesMatching = []
         if(args == []):
             print("Please Sepcify an term to search")
@@ -184,9 +194,15 @@ class Console:
         for (root, dirs, files) in os.walk("modules"):
             for file in files:
                 if(file.endswith(".py")):
-                    if(match in file[0:-3]):
-                        self.uselist.append(os.path.join(root, file[0:-3]))
-                        #print("\t%d\t"%usei, os.path.join(root, file[0:-3]))
+                    if(p == False):
+                        if(match in file[0:-3]):
+                            #append with coloured output
+                            self.uselist.append(os.path.join(root, file[0:-3].replace(match, colored(match, 'red'))))
+                            #print("\t%d\t"%usei, os.path.join(root, file[0:-3]))
+                    else:
+                        if(match in os.path.join(root, file[0:-3])):
+                            #append with coloured output
+                            self.uselist.append(os.path.join(root, file[0:-3]).replace(match, colored(match, 'red')))
         if(len(self.uselist) > 0):
             self.printuselist()
 

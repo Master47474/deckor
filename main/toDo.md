@@ -22,7 +22,6 @@ allow for recent Solution output to be piped into a file instead of screen\
 
 # Modules
 The Additons for modules\
-base64Decoder\
 add blocksizes to text module\
 
 # Ciphers
@@ -38,6 +37,9 @@ Read Key and Message from File\
 # Encoding
 
 ## Base64
+
+### Base64 Decoder
+Nothing \
 
 ### Base64 Encoder
 Nothing \
