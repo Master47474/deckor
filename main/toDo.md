@@ -13,6 +13,7 @@ Ability to Load, store and restore multiple console sessions at any given time\
 ## Console.py
 Ability to change ciphertext from input or new file\
 recursive function\
+FLUSH Out and Redo parts of direcotry managment input/chandging/output \
 
 ## ParentModule.py
 allow for recent Solution output to be piped into a file instead of screen\
