@@ -23,6 +23,7 @@ class Console:
         #contents , module that returned it
         self.resultlist = []
         self.invokedResult = None
+        #(Output Colored, Path)
         self.uselist = []
         #of form (command , points to index in commandsFunc) as multiple commands can point to same function
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
@@ -69,7 +70,7 @@ class Console:
     def printuselist(self):
         i = 0
         print("\n\tUse\tModule\n")
-        for o in self.uselist:
+        for o,p in self.uselist:
             print(f"\t{i}\t{o}")
             i += 1
         print("\n")
@@ -197,12 +198,12 @@ class Console:
                     if(p == False):
                         if(match in file[0:-3]):
                             #append with coloured output
-                            self.uselist.append(os.path.join(root, file[0:-3].replace(match, colored(match, 'red'))))
+                            self.uselist.append( (os.path.join(root, file[0:-3].replace(match, colored(match, 'red'))) , os.path.join(root, file[0:-3])) )
                             #print("\t%d\t"%usei, os.path.join(root, file[0:-3]))
                     else:
                         if(match in os.path.join(root, file[0:-3])):
                             #append with coloured output
-                            self.uselist.append(os.path.join(root, file[0:-3]).replace(match, colored(match, 'red')))
+                            self.uselist.append(  (os.path.join(root, file[0:-3]).replace(match, colored(match, 'red')) , os.path.join(root, file[0:-3])) )
         if(len(self.uselist) > 0):
             self.printuselist()
 
@@ -223,7 +224,7 @@ class Console:
         self.resetmodule()
         moduletoload = None
         try:
-            moduletoload = self.uselist[int(args[0])]
+            moduletoload = self.uselist[int(args[0])][1]
             print("Loaded ", moduletoload, "Successfully\n")
         except:
             moduletoload = args[0]

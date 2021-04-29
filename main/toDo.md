@@ -13,10 +13,8 @@ Ability to Load, store and restore multiple console sessions at any given time\
 ## Console.py
 Ability to change ciphertext from input or new file\
 recursive function\
-Highlighting Matches in a string when output for searching for modules\
 
 ## ParentModule.py
-Ability to have block sizes for output and/or input *to be done in new module*\
 allow for recent Solution output to be piped into a file instead of screen\
 
 
@@ -61,3 +59,6 @@ Nothing\
 
 ## replacechar.py
 Make it work for quick call\
+
+## cahngeblocksize.py
+Nothing\
