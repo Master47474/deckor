@@ -7,6 +7,8 @@
 import sys
 import session
 
+from text import text
+
 
 def init():
     """
@@ -30,11 +32,11 @@ def init():
         with open(file, 'r') as file:
             ciphertext = file.read()
             print(f"Ciphertext Loaded from file: \n{ciphertext}\n")
-        return ciphertext
+        return text(ciphertext)
 
 def main():
     ciphertext = init()
-    session.startSession(ciphertext);
+    session.startSession(ciphertext)
 
 
 

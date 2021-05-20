@@ -5,12 +5,12 @@ from termcolor import colored
 #Init colorama and termcolor
 init()
 
+from text import text
+
+
+
 
 class Console:
-    """
-    Commands Type as follows
-    0: ??
-    """
 
     def __init__(self, ciphertext):
         self.originalCiphertext = ciphertext
@@ -38,7 +38,7 @@ class Console:
 
     #def returnfunc(self, )
     def printciphertext(self):
-        print(f"\nOriginal:\n{self.originalCiphertext}\n")
+        print(f"\nOriginal:\n{self.originalCiphertext.getMessage()}\n")
 
     def awaitcommand(self):
         inline = input(f"dec ({self.modulePath}) > ")
@@ -129,7 +129,7 @@ class Console:
         self.modulePath = path
         self.module = module
 
-    #all commands are in all caps
+
     def commands(self, command, args):
         #debugging print("Args : " , args)
         #reword args is res keyword is used
@@ -303,8 +303,8 @@ class Console:
             if(val):
                 print("File %s Exists" % args[0])
                 with open(newPath, 'r') as file:
-                    self.originalCiphertext = file.read()
-                    print(f"Ciphertext Loaded from file: \n{self.originalCiphertext}\n")
+                    self.originalCiphertext = text(file.read())
+                    print(f"Ciphertext Loaded from file: \n{self.originalCiphertext.getMessage()}\n")
             else:
                 print("Path to file does not exist")
         else:

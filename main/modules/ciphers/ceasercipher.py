@@ -1,4 +1,5 @@
 from parentmodule import module
+from ttypes import types
 
 class ceasercipher(module): # Shift Cipher
 
@@ -24,8 +25,15 @@ class ceasercipher(module): # Shift Cipher
     # Positive is anticlockwise (i.e  1 -> a = z)
     # Negative is clockwise     (i.e -1 -> a = b)
     def shift(self, quietMode):
+        """
+        Shift Only works on Types of "Unicode"
+        """
+        if(self.ciphertext.getType() != types().determineType("unicode")):
+            if(quietMode == False):
+                print("Incorrect Type of message")
+            return
         shifted = ""
-        for c in self.ciphertext:
+        for c in self.ciphertext.getMessage():
             if(c == ' ' or c == '\n'):
                 shifted += c
                 continue

@@ -1,3 +1,6 @@
+
+from text import text
+
 class module:
     def __init__(self, ciphertext):
         #For the Parents Modules Own use
