@@ -20,6 +20,7 @@ class module:
         self.runfunction = None
         self.quick = False # To implement For a quick function
         self.defaultParams = []
+        self.messageContexts = []
         #This is for extra commands that can only be used in this module
         self.AddedCommands = []              #of format ("name", index to functions list, "Desc", "index to default params")
         self.AddedCommandsFunc = []          #of format (self.func)
@@ -71,6 +72,8 @@ class module:
             return ParameterUsed
 
     def callAddedFunc(self, commandIndex, paramsIndex, args):
+        if(self.processsContext(False, True) == False):
+            return
         newargs = self.checkargsFunc(args, *(self.defaultParams[paramsIndex][1:]))
         self.AddedCommandsFunc[commandIndex](*newargs)
 
@@ -133,6 +136,29 @@ class module:
 
     def run(self, args):
         print("Running this Modules Main function")
+        if(self.processsContext(False, True) == False):
+            return
         newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
         self.runfunction(*newargs)
         print(self.recentSolution)
+
+    def inGoodContext(self):
+        if(self.ciphertext.isOfType(self.messageContexts)):
+            return True
+        return False
+
+    def processsContext(self, quietMode, toConvert=False):
+        if(self.inGoodContext() == False):
+            if(quietMode == False):
+                print("Incorrect Context of message")
+                if(toConvert):
+                    print("Converting")
+                else:
+                    print("Not Continuing with current message context")
+            #Do we convert
+            if(toConvert):
+                #Convert it
+                return True
+            else:
+                return False
+        return True

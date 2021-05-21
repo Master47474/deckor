@@ -30,9 +30,9 @@ def init():
 
         ciphertext = None
         with open(file, 'r') as file:
-            ciphertext = file.read()
-            print(f"Ciphertext Loaded from file: \n{ciphertext}\n")
-        return text(ciphertext)
+            ciphertext = text(file.read())
+            print(f"Ciphertext Loaded from file: \n{ciphertext.getMessage()}\n")
+        return ciphertext
 
 def main():
     ciphertext = init()

@@ -11,7 +11,7 @@ class text():
 
     def __init__(self, message, type="undefined"):
         self.types = types()
-        self.message = ""
+        self.message = message
         self.type = self.types.determineType(type)
 
     def getMessage(self):
@@ -19,6 +19,20 @@ class text():
 
     def getType(self):
         return self.type
+
+    def isOfType(self, typesList):
+        for t in typesList:
+            if(self.type == self.types.determineType(t)):
+                return True
+        return False
+
+    def setType(self, type):
+        try:
+            self.type = self.types.determineType(type)
+            return True
+        except:
+            print("Unknown Type")
+            return False
 
     #Converting To Other Types
     def setDesiredType(self, convertTo):

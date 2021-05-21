@@ -7,3 +7,8 @@ class types():
 
     def determineType(self, typeStr):
         return self.Types[typeStr]
+
+    def getType(self, type):
+        for t in self.Types:
+            if(self.Types[t] == type):
+                return t

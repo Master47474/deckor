@@ -9,6 +9,7 @@ class ceasercipher(module): # Shift Cipher
         self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
 
         self.defaultParams = [("Shift", ["-q"], [True], [False]), ("Brute Shift", ["-q"], [True], [False])]
+        self.messageContexts = ["unicode"]
         #-------------------
         self.AddedCommands = [("brute", 0 , "try all 26 shifts on the ciphertext", 1)]
         self.AddedCommandsFunc = [self.bruteshift]
@@ -28,11 +29,9 @@ class ceasercipher(module): # Shift Cipher
         """
         Shift Only works on Types of "Unicode"
         """
-        if(self.ciphertext.getType() != types().determineType("unicode")):
-            if(quietMode == False):
-                print("Incorrect Type of message")
-            return
+
         shifted = ""
+        print(self.ciphertext.getMessage())
         for c in self.ciphertext.getMessage():
             if(c == ' ' or c == '\n'):
                 shifted += c

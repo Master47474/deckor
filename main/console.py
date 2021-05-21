@@ -6,7 +6,7 @@ from termcolor import colored
 init()
 
 from text import text
-
+from ttypes import types
 
 
 
@@ -29,11 +29,11 @@ class Console:
         self.commandsList = [("help", 0), ("quit", 1), ("search", 2), ("original", 3), ("og", 3), ("show", 4), ("unload", 5),
                              ("set", 6), ("run", 7), ("use", 8), ("uselist", 9), ("ul", 9), ("quick", 10), ("res", 11),
                              ("resultslist", 12), ("rl", 12), ("fload", 13), ("cd", 14), ("pwd", 15), ("ls", 16),
-                             (("searchp", 17))]
+                             ("searchp", 17), ("type", 18), ("sett", 19)]
         #all take the args argument but some dont use it
         self.commandsFunc = [self.help, self.quit, self.search, self.original, self.show, self.unload,
                              self.set, self.run, self.use, self.showUseList, self.quick, self.res, self.showResultsList,
-                             self.fload, self.cd, self.pwd, self.ls, self.searchp]
+                             self.fload, self.cd, self.pwd, self.ls, self.searchp, self.type, self.sett]
 
 
     #def returnfunc(self, )
@@ -161,7 +161,6 @@ class Console:
     def help(self, args):
         print("\tsearch\t\t : Use to search for tools to use")
         print("\tsearchp\t\t : Use to search for tools to use including full path")
-        print("\toriginal \ og\t : Shows last loaded cipher. -a to list all prev ciphers")
         print("\tuse\t\t : Use to load a module")
         print("\tres\t\t : Use to invoke a recent result")
         print("\tuselist\t\t : Use to show current uselist")
@@ -169,7 +168,11 @@ class Console:
         print("\tshow\t\t : Use to get options for a module")
         print("\tquick\t\t : Use to quickly load and execute the modules run function wihtout loading the module. Must put inpout args")
         print("\tfload\t\t : Use to load in text from a a file")
-        print("\nModule shit --------")
+        print("\nText Shit ------")
+        print("\toriginal \ og\t : Shows last loaded cipher. -a to list all prev ciphers")
+        print("\ttype\t\t : Use to get type of current text")
+        print("\tsett\t\t : Use to set type of text manually")
+        print("\nModule Shit --------")
         print("\tunload\t\t : Use to unload a module and wiping any settings set for said module")
         print("\tset\t\t : Use to set a variable in a module")
         print("\trun\t\t : Use to run a module")
@@ -417,3 +420,14 @@ class Console:
             print("\t\\"+d+"\\")
         for f in files:
             print("\t\\"+f)
+
+
+    def type(self, args):
+        print("Running get Type")
+        print("Type: ", types().getType(self.originalCiphertext.getType()))
+
+
+    def sett(self, args):
+        type = args[0].lower()
+        if(self.originalCiphertext.setType(type)):
+            print("Type Succesfully set")
