@@ -48,8 +48,10 @@ class Console:
         #args = [x for x in inline.split(" ") if x != '' ]
         args = self.parseArgs(inline)
         command = args[0]
-        print("args " , args[1:])
+        print("command : ", command)
+        print("args : " , args[1:])
         self.commands(command, args[1:])
+        print("")
 
 
     def parseArgs(self, inline):
@@ -147,7 +149,10 @@ class Console:
                         return
                 self.commandsFunc[index](args)
                 executionDetails = (True, False)
-        if(self.module != None and executionDetails != None):
+                if(command == "run" and self.module != None):
+                    if(self.module.replaceCipherText == True):
+                        executionDetails = (True, True)
+        if(self.module != None and executionDetails == None):
             for (com, index, desc, idp) in self.module.AddedCommands:
                 if(command == com):
                     if(len(args) >  0):
@@ -155,7 +160,9 @@ class Console:
                             print("Extra Help for command args")
                             return
                     executionDetails = self.module.callAddedFunc(index, idp, args)
+                    self.pushtoResultsList()
                     #self.module.AddedCommandsFunc[index](args)
+        print("Esxecution is ", executionDetails)
         if(executionDetails == None):
             print("Command not recognised")
             return
@@ -163,10 +170,19 @@ class Console:
             print("Module Command Failed to execute")
             return
         # This is if we did it succesfully but dont want to replace the current ciphertext in our console session
+        # As it is a non module command
         if(executionDetails[1] == False):
             return
+        # Then it means that (True, True)
+        # Cannot Repalce current text with a list of text
+        # More of error handling as it shouldnt do this
+        if(self.module.recentSolutionList == True):
+            return
+        self.replaceCipherText()
 
-
+    def replaceCipherText(self):
+        self.pushResult(self.originalCiphertext, "Replaced from console")
+        self.originalCiphertext = self.module.recentSolution
 
     def quit(self, args):
         exit()
@@ -337,12 +353,16 @@ class Console:
 
     def run(self, args):
         self.module.run(args)
+        self.pushtoResultsList()
+
+    def pushtoResultsList(self):
         if(self.module.recentSolution != None):
             if(self.module.recentSolutionList == False):
                 self.pushResult(self.module.recentSolution, self.modulePath)
             else:
-                for r in self.recentSolution:
+                for r in self.module.recentSolution:
                     self.pushResult(r, self.modulePath)
+
 
     def pathexists(self, arg):
         temppath = self.cwd

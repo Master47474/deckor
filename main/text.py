@@ -22,6 +22,8 @@ class text():
 
     def isOfType(self, typesList):
         for t in typesList:
+            if(t == "void"):
+                return True
             if(self.type == self.types.determineType(t)):
                 return True
         return False
@@ -33,6 +35,11 @@ class text():
         except:
             print("Unknown Type")
             return False
+
+    def __str__(self):
+        if(self.message == None):
+            return "NullType"
+        return self.message
 
     #Converting To Other Types
     def setDesiredType(self, convertTo):

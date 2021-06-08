@@ -8,6 +8,7 @@ class ceasercipher(module): # Shift Cipher
         super().__init__(ciphertext)
         self.runfunction = self.shift
         self.setOptions([["SHIFT", self.getShift,"For shift of cipher (+int anticlockwise) (-int clockwise)", self.setShift]])
+        self.replaceCipherText = False
 
         self.defaultParams = [("Shift", ["-q"], [True], [False]), ("Brute Shift", ["-q"], [True], [False])]
         self.messageContexts = ["unicode"]
@@ -63,7 +64,8 @@ class ceasercipher(module): # Shift Cipher
         bruted = []
         for i in range(26):
             self.setShift(i, quietMode)
-            bruted.append(self.shift(quietMode))
+            self.shift(quietMode)
+            bruted.append(self.recentSolution)
         self.restoreSettings()
         savetofile = self.responseNeeded("Save bruteforce to file.txt [y/n] ? ")
         printtoscreen = self.responseNeeded("Print all of bruteforce [y/n] ?")
@@ -73,9 +75,7 @@ class ceasercipher(module): # Shift Cipher
         if(printtoscreen == "y"):
             for i in range(26):
                 print(f"{i} -{26-i} : {bruted[i]}")
-
-        self.recentSolutionList = True
-        self.recentSolution = bruted
+        self.newListOfTexts(bruted)
 
 
     #Setters and Getters

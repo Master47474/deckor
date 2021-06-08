@@ -39,7 +39,15 @@ class module:
     #List Version
     def newTexts(self, contents, type):
         self.recentSolutionList = True
-        self.recentSolution = text(contents, type)
+        self.recentSolution = []
+        for content in contents:
+            self.recentSolution.append(text(content, type))
+
+    def newListOfTexts(self, texts):
+        self.recentSolutionList = True
+        self.recentSolution = []
+        for content in texts:
+            self.recentSolution.append(content)
 
     def getRecentOutput(self):
         return self.recentSolution, self.recentSolutionList
@@ -152,7 +160,8 @@ class module:
             return (False, self.replaceCipherText)
         newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
         self.runfunction(*newargs)
-        print(self.recentSolution)
+        print("Runs recent Sol : ", self.recentSolution)
+        print(self.replaceCipherText)
         return (True, self.replaceCipherText)
 
     def inGoodContext(self):
