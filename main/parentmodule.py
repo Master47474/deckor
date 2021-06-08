@@ -7,6 +7,7 @@ class module:
         self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
         self.recentSolutionList = False
         self.recentSolution = None
+        self.workingWithType = "undefined"  # Must be set in child
         self.replaceCipherText = False      # For Converts
         #MUST HAVE EVEN IF NOT USING IT
         #---------------------------------
@@ -30,6 +31,15 @@ class module:
         #Modue Specific varaibles
         #For Quick
         #Goes Here
+
+    def newText(self, contents, type):
+        self.recentSolutionList = False
+        self.recentSolution = text(contents, type)
+
+    #List Version
+    def newTexts(self, contents, type):
+        self.recentSolutionList = True
+        self.recentSolution = text(contents, type)
 
     def getRecentOutput(self):
         return self.recentSolution, self.recentSolutionList
@@ -74,9 +84,10 @@ class module:
 
     def callAddedFunc(self, commandIndex, paramsIndex, args):
         if(self.processsContext(False, True) == False):
-            return
+            return (False, self.replaceCipherText)
         newargs = self.checkargsFunc(args, *(self.defaultParams[paramsIndex][1:]))
         self.AddedCommandsFunc[commandIndex](*newargs)
+        return (True, self.replaceCipherText)
 
     def showOptions(self):
         print("\n\tName\tValue\tDescription")
@@ -138,10 +149,11 @@ class module:
     def run(self, args):
         print("Running this Modules Main function")
         if(self.processsContext(False, True) == False):
-            return
+            return (False, self.replaceCipherText)
         newargs = self.checkargsFunc(args, *(self.defaultParams[0][1:]))
         self.runfunction(*newargs)
         print(self.recentSolution)
+        return (True, self.replaceCipherText)
 
     def inGoodContext(self):
         if(self.ciphertext.isOfType(self.messageContexts)):

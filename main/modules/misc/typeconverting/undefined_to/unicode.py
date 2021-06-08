@@ -25,4 +25,4 @@ class unicode(module): # undefined to unicode
     Should never be used unless user knows it is correct type
     """
     def convert(self, quietMode):
-        self.ciphertext.setType*("unicode")
+        self.ciphertext.setType("unicode")

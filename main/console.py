@@ -136,6 +136,7 @@ class Console:
     def commands(self, command, args):
         #debugging print("Args : " , args)
         #reword args is res keyword is used
+        executionDetails = None
         args = self.reorderArgs("res", 1, args)
         print("new Args ", args)
         for (com, index) in self.commandsList:
@@ -145,18 +146,27 @@ class Console:
                         print("extra help for command args")
                         return
                 self.commandsFunc[index](args)
-                return
-        if(self.module != None):
+                executionDetails = (True, False)
+        if(self.module != None and executionDetails != None):
             for (com, index, desc, idp) in self.module.AddedCommands:
                 if(command == com):
                     if(len(args) >  0):
                         if(args[0] == "?"):
                             print("Extra Help for command args")
                             return
-                    self.module.callAddedFunc(index, idp, args)
+                    executionDetails = self.module.callAddedFunc(index, idp, args)
                     #self.module.AddedCommandsFunc[index](args)
-                    return
-        print("Command not reckognised")
+        if(executionDetails == None):
+            print("Command not recognised")
+            return
+        if(executionDetails[0] == False):
+            print("Module Command Failed to execute")
+            return
+        # This is if we did it succesfully but dont want to replace the current ciphertext in our console session
+        if(executionDetails[1] == False):
+            return
+
+
 
     def quit(self, args):
         exit()

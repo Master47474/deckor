@@ -1,4 +1,5 @@
 from parentmodule import module
+from text import text
 from ttypes import types
 
 class ceasercipher(module): # Shift Cipher
@@ -48,8 +49,7 @@ class ceasercipher(module): # Shift Cipher
                 print("Shifted by %d %s" % (self.shiftVal*-1, "anticlockwise"))
             self.newtext = shifted
             print(f"\n{shifted}\n")
-        self.recentSolutionList = False
-        self.recentSolution = shifted
+        self.newText(shifted, self.workingWithType)
 
 
     #Added Outside Commands
