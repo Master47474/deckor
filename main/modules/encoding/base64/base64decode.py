@@ -2,7 +2,7 @@ from parentmodule import module
 
 
 class base64decode(module): # Base64 Decoding
-    pass
+    
     def __init__(self, ciphertext):
         super().__init__(ciphertext)
         self.runfunction = self.decode

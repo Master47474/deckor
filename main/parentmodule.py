@@ -7,6 +7,7 @@ class module:
         self.ciphertext = ciphertext        #Ciphertext 'og' of time of loaded
         self.recentSolutionList = False
         self.recentSolution = None
+        self.replaceCipherText = False      # For Converts
         #MUST HAVE EVEN IF NOT USING IT
         #---------------------------------
         self.newtext = ""                   #the text after the runfunction is applied, only stores latestrun

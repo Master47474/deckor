@@ -38,7 +38,10 @@ class Console:
 
     #def returnfunc(self, )
     def printciphertext(self):
-        print(f"\nOriginal:\n{self.originalCiphertext.getMessage()}\n")
+        print(f"\nMessage:\n{self.originalCiphertext.getMessage()}\n")
+
+    def printciphertype(self):
+        print(f"\nType:\n{types().getType(self.originalCiphertext.getType())}\n")
 
     def awaitcommand(self):
         inline = input(f"dec ({self.modulePath}) > ")
@@ -214,6 +217,7 @@ class Console:
         #Have Args to see all previous loaded ciphers
         print("Orignal Last Loaded Ciphertext")
         self.printciphertext()
+        self.printciphertype()
 
     def use(self, args, isQuick=False, quickArgs=[]):
         print('USE ARGS = ', args)
