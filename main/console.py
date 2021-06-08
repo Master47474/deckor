@@ -47,11 +47,12 @@ class Console:
         inline = input(f"dec ({self.modulePath}) > ")
         #args = [x for x in inline.split(" ") if x != '' ]
         args = self.parseArgs(inline)
-        command = args[0]
-        print("command : ", command)
-        print("args : " , args[1:])
-        self.commands(command, args[1:])
-        print("")
+        if(args != []):
+            command = args[0]
+            print("command : ", command)
+            print("args : " , args[1:])
+            self.commands(command, args[1:])
+            print("")
 
 
     def parseArgs(self, inline):
